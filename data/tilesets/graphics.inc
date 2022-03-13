@@ -1729,3 +1729,23 @@ gTilesetPalettes_UnionRoom::
 	.align 2
 gTilesetTiles_UnionRoom::
 	.incbin "data/tilesets/secondary/union_room/tiles.4bpp.lz"
+
+	.align 2
+gTilesetPalettes_Manglar::
+	.incbin "data/tilesets/secondary/manglar/palettes/00.gbapal"
+	.incbin "data/tilesets/secondary/manglar/palettes/01.gbapal"
+	.incbin "data/tilesets/secondary/manglar/palettes/02.gbapal"
+	.incbin "data/tilesets/secondary/manglar/palettes/03.gbapal"
+	.incbin "data/tilesets/secondary/manglar/palettes/04.gbapal"
+	.incbin "data/tilesets/secondary/manglar/palettes/05.gbapal"
+	.incbin "data/tilesets/secondary/manglar/palettes/06.gbapal"
+	.incbin "data/tilesets/secondary/manglar/palettes/07.gbapal"
+	.incbin "data/tilesets/secondary/manglar/palettes/08.gbapal"
+	.incbin "data/tilesets/secondary/manglar/palettes/09.gbapal"
+	.incbin "data/tilesets/secondary/manglar/palettes/10.gbapal"
+	.incbin "data/tilesets/secondary/manglar/palettes/11.gbapal"
+	.incbin "data/tilesets/secondary/manglar/palettes/12.gbapal"
+
+	.align 2
+gTilesetTiles_Manglar::
+	.incbin "data/tilesets/secondary/manglar/tiles.4bpp.lz"
