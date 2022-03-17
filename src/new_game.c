@@ -45,6 +45,8 @@
 #include "mystery_gift.h"
 #include "union_room_chat.h"
 #include "constants/items.h"
+#include "strings.h"
+#include "string_util.h"
 
 extern const u8 EventScript_ResetAllMapFlags[];
 
@@ -153,6 +155,7 @@ void NewGameInitData(void)
 
     gDifferentSaveFile = TRUE;
     gSaveBlock2Ptr->encryptionKey = 0;
+    StringCopy(gSaveBlock2Ptr->playerName, gText_PlayerName);
     ZeroPlayerPartyMons();
     ZeroEnemyPartyMons();
     ResetPokedex();
@@ -169,7 +172,7 @@ void NewGameInitData(void)
     ResetGabbyAndTy();
     ClearSecretBases();
     ClearBerryTrees();
-    SetMoney(&gSaveBlock1Ptr->money, 3000);
+    SetMoney(&gSaveBlock1Ptr->money, 20);
     SetCoins(0);
     ResetLinkContestBoolean();
     ResetGameStats();
