@@ -207,7 +207,7 @@ void NewGameInitData(void)
     WipeTrainerNameRecords();
     ResetTrainerHillResults();
     ResetContestLinkResults();
-    gSaveBlock2Ptr->autoRun = FALSE;
+    gSaveBlock2Ptr->autoRun = TRUE;
 }
 
 static void ResetMiniGamesRecords(void)
