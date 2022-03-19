@@ -62,7 +62,10 @@ LittlerootTown_Chiste:
 LittlerootTown_Matriculate:
 	msgbox LittlerootTown_Text_AsiSeHabla, MSGBOX_DEFAULT
 	waitmessage
-
+	special NamePlayer
+	waitstate
+	special NameRival
+	waitstate
 	msgbox LittlerootTown_Text_VenALaVilla, MSGBOX_DEFAULT
 	waitmessage
 	closemessage
