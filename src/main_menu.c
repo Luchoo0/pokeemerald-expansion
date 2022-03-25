@@ -1809,12 +1809,14 @@ static void CB2_NewGameBirchSpeech_ReturnFromNamingScreen(void)
     if (gSaveBlock2Ptr->playerGender != MALE)
     {
         gTasks[taskId].tPlayerGender = FEMALE;
-        spriteId = gTasks[taskId].tMaySpriteId;
+        spriteId = gTasks[taskId].tMaySpriteId ;
+        gSaveBlock2Ptr->playerGender, 0, 0;
     }
     else
     {
         gTasks[taskId].tPlayerGender = MALE;
         spriteId = gTasks[taskId].tBrendanSpriteId;
+        gSaveBlock2Ptr->playerGender, 0, 0;
     }
     gSprites[spriteId].x = 180;
     gSprites[spriteId].y = 60;

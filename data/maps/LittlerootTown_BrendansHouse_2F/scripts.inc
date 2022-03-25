@@ -1,239 +1,7 @@
-.set LOCALID_RIVAL, 1
+.set LOCALID_MOM, 1
 
 LittlerootTown_BrendansHouse_2F_MapScripts::
-	map_script MAP_SCRIPT_ON_TRANSITION, LittlerootTown_BrendansHouse_2F_OnTransition
-	map_script MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE, LittlerootTown_BrendansHouse_2F_OnWarp
 	.byte 0
-
-LittlerootTown_BrendansHouse_2F_OnTransition:
-	call_if_lt VAR_LITTLEROOT_RIVAL_STATE, 2, LittlerootTown_BrendansHouse_2F_EventScript_CheckSetReadyToMeetBrendan
-	call_if_ge VAR_LITTLEROOT_RIVAL_STATE, 3, LittlerootTown_BrendansHouse_2F_EventScript_CheckShouldUpdateBrendanPos
-	call_if_eq VAR_LITTLEROOT_INTRO_STATE, 4, PlayersHouse_2F_EventScript_BlockStairsUntilClockIsSet
-	call SecretBase_EventScript_SetDecorationFlags
-	setvar VAR_SECRET_BASE_INITIALIZED, 0
-	end
-
-LittlerootTown_BrendansHouse_2F_EventScript_CheckShouldUpdateBrendanPos::
-	goto_if_set FLAG_MET_RIVAL_LILYCOVE, LittlerootTown_BrendansHouse_2F_EventScript_TryUpdateBrendanPos
-	goto_if_ge VAR_BIRCH_LAB_STATE, 2, LittlerootTown_BrendansHouse_2F_EventScript_Ret
-	goto LittlerootTown_BrendansHouse_2F_EventScript_TryUpdateBrendanPos
-
-LittlerootTown_BrendansHouse_2F_EventScript_TryUpdateBrendanPos::
-	checkplayergender
-	goto_if_eq VAR_RESULT, MALE, LittlerootTown_BrendansHouse_2F_EventScript_Ret
-	@ Odd that the MaysHouse equivalent was used below instead
-	goto_if_ge VAR_DEX_UPGRADE_JOHTO_STARTER_STATE, 2 LittlerootTown_MaysHouse_2F_EventScript_Ret
-	setobjectxyperm LOCALID_RIVAL, 0, 2
-	setobjectmovementtype LOCALID_RIVAL, MOVEMENT_TYPE_FACE_UP
-	return
-
-LittlerootTown_BrendansHouse_2F_EventScript_Ret::
-	return
-
-LittlerootTown_BrendansHouse_2F_EventScript_CheckSetReadyToMeetBrendan::
-	checkplayergender
-	goto_if_eq VAR_RESULT, FEMALE, LittlerootTown_BrendansHouse_2F_EventScript_SetReadyToMeetBrendan
-	return
-
-LittlerootTown_BrendansHouse_2F_EventScript_SetReadyToMeetBrendan::
-	setvar VAR_LITTLEROOT_RIVAL_STATE, 2
-	return
-
-LittlerootTown_BrendansHouse_2F_OnWarp:
-	map_script_2 VAR_SECRET_BASE_INITIALIZED, 0, LittlerootTown_BrendansHouse_2F_EventScript_CheckInitDecor
-	.2byte 0
-
-LittlerootTown_BrendansHouse_2F_EventScript_CheckInitDecor::
-	checkplayergender
-	goto_if_eq VAR_RESULT, MALE, SecretBase_EventScript_InitDecorations
-	end
-
-LittlerootTown_BrendansHouse_2F_EventScript_RivalsPokeBall::
-	lockall
-	goto_if_eq VAR_LITTLEROOT_RIVAL_STATE, 2, LittlerootTown_BrendansHouse_2F_EventScript_MeetBrendan
-	msgbox RivalsHouse_2F_Text_ItsRivalsPokeBall, MSGBOX_DEFAULT
-	releaseall
-	end
-
-LittlerootTown_BrendansHouse_2F_EventScript_MeetBrendan::
-	delay 10
-	addobject LOCALID_RIVAL
-	applymovement LOCALID_RIVAL, LittlerootTown_BrendansHouse_2F_Movement_BrendanEnters
-	waitmovement 0
-	playse SE_PIN
-	applymovement LOCALID_RIVAL, Common_Movement_ExclamationMark
-	waitmovement 0
-	applymovement LOCALID_RIVAL, Common_Movement_Delay48
-	waitmovement 0
-	delay 10
-	playbgm MUS_ENCOUNTER_BRENDAN, TRUE
-	call_if_eq VAR_FACING, DIR_NORTH, LittlerootTown_BrendansHouse_2F_EventScript_MeetBrendanNorth
-	call_if_eq VAR_FACING, DIR_SOUTH, LittlerootTown_BrendansHouse_2F_EventScript_MeetBrendanSouth
-	call_if_eq VAR_FACING, DIR_WEST, LittlerootTown_BrendansHouse_2F_EventScript_MeetBrendanWest
-	call_if_eq VAR_FACING, DIR_EAST, LittlerootTown_BrendansHouse_2F_EventScript_MeetBrendanEast
-	setvar VAR_LITTLEROOT_RIVAL_STATE, 3
-	setflag FLAG_HIDE_LITTLEROOT_TOWN_BRENDANS_HOUSE_2F_POKE_BALL
-	clearflag FLAG_HIDE_LITTLEROOT_TOWN_BRENDANS_HOUSE_RIVAL_BEDROOM
-	setvar VAR_LITTLEROOT_TOWN_STATE, 1
-	savebgm MUS_DUMMY
-	fadedefaultbgm
-	releaseall
-	end
-
-LittlerootTown_BrendansHouse_2F_EventScript_MeetBrendanNorth::
-	applymovement LOCALID_RIVAL, LittlerootTown_BrendansHouse_2F_Movement_BrendanApproachPlayerNorth
-	waitmovement 0
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterRight
-	waitmovement 0
-	msgbox RivalsHouse_2F_Text_BrendanWhoAreYou, MSGBOX_DEFAULT
-	closemessage
-	applymovement OBJ_EVENT_ID_PLAYER, LittlerootTown_BrendansHouse_2F_Movement_PlayerWatchBrendanNorth
-	applymovement LOCALID_RIVAL, LittlerootTown_BrendansHouse_2F_Movement_BrendanWalkToPCNorth
-	waitmovement 0
-	return
-
-LittlerootTown_BrendansHouse_2F_EventScript_MeetBrendanSouth::
-	applymovement LOCALID_RIVAL, LittlerootTown_BrendansHouse_2F_Movement_BrendanApproachPlayerSouth
-	waitmovement 0
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterRight
-	waitmovement 0
-	msgbox RivalsHouse_2F_Text_BrendanWhoAreYou, MSGBOX_DEFAULT
-	closemessage
-	applymovement OBJ_EVENT_ID_PLAYER, LittlerootTown_BrendansHouse_2F_Movement_PlayerWatchBrendanSouth
-	applymovement LOCALID_RIVAL, LittlerootTown_BrendansHouse_2F_Movement_BrendanWalkToPCSouth
-	waitmovement 0
-	return
-
-LittlerootTown_BrendansHouse_2F_EventScript_MeetBrendanWest::
-	applymovement LOCALID_RIVAL, LittlerootTown_BrendansHouse_2F_Movement_BrendanApproachPlayerWest
-	waitmovement 0
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterRight
-	waitmovement 0
-	msgbox RivalsHouse_2F_Text_BrendanWhoAreYou, MSGBOX_DEFAULT
-	closemessage
-	applymovement OBJ_EVENT_ID_PLAYER, LittlerootTown_BrendansHouse_2F_Movement_PlayerWatchBrendanWest
-	applymovement LOCALID_RIVAL, LittlerootTown_BrendansHouse_2F_Movement_BrendanWalkToPCWest
-	waitmovement 0
-	return
-
-LittlerootTown_BrendansHouse_2F_EventScript_MeetBrendanEast::
-	applymovement LOCALID_RIVAL, LittlerootTown_BrendansHouse_2F_Movement_BrendanApproachPlayerEast
-	waitmovement 0
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
-	waitmovement 0
-	msgbox RivalsHouse_2F_Text_BrendanWhoAreYou, MSGBOX_DEFAULT
-	closemessage
-	applymovement LOCALID_RIVAL, LittlerootTown_BrendansHouse_2F_Movement_BrendanWalkToPCEast
-	waitmovement 0
-	return
-
-LittlerootTown_BrendansHouse_2F_Movement_BrendanEnters:
-	walk_down
-	walk_down
-	walk_in_place_faster_left
-	step_end
-
-LittlerootTown_BrendansHouse_2F_Movement_BrendanApproachPlayerNorth:
-	walk_left
-	walk_left
-	walk_down
-	walk_down
-	walk_left
-	step_end
-
-LittlerootTown_BrendansHouse_2F_Movement_BrendanWalkToPCNorth:
-	walk_up
-	walk_up
-	walk_up
-	walk_left
-	walk_left
-	walk_left
-	walk_left
-	walk_in_place_faster_up
-	step_end
-
-LittlerootTown_BrendansHouse_2F_Movement_PlayerWatchBrendanNorth:
-	delay_16
-	walk_in_place_faster_up
-	delay_16
-	delay_16
-	delay_16
-	delay_16
-	walk_in_place_faster_left
-	step_end
-
-LittlerootTown_BrendansHouse_2F_Movement_BrendanApproachPlayerSouth:
-	walk_left
-	walk_left
-	walk_left
-	step_end
-
-LittlerootTown_BrendansHouse_2F_Movement_BrendanWalkToPCSouth:
-	walk_up
-	walk_left
-	walk_left
-	walk_left
-	walk_left
-	walk_in_place_faster_up
-	step_end
-
-LittlerootTown_BrendansHouse_2F_Movement_PlayerWatchBrendanSouth:
-	delay_16
-	walk_in_place_faster_up
-	delay_16
-	delay_16
-	walk_in_place_faster_left
-	step_end
-
-LittlerootTown_BrendansHouse_2F_Movement_BrendanApproachPlayerWest:
-	walk_left
-	walk_left
-	walk_down
-	walk_in_place_faster_left
-	step_end
-
-LittlerootTown_BrendansHouse_2F_Movement_BrendanWalkToPCWest:
-	walk_up
-	walk_up
-	walk_left
-	walk_left
-	walk_left
-	walk_left
-	walk_left
-	walk_in_place_faster_up
-	step_end
-
-LittlerootTown_BrendansHouse_2F_Movement_PlayerWatchBrendanWest:
-	delay_8
-	delay_16
-	walk_in_place_faster_up
-	delay_16
-	delay_16
-	walk_in_place_faster_left
-	step_end
-
-LittlerootTown_BrendansHouse_2F_Movement_BrendanApproachPlayerEast:
-	walk_left
-	walk_left
-	walk_left
-	walk_left
-	walk_left
-	walk_in_place_faster_down
-	step_end
-
-LittlerootTown_BrendansHouse_2F_Movement_BrendanWalkToPCEast:
-	walk_up
-	walk_left
-	walk_left
-	walk_in_place_faster_up
-	step_end
-
-@ Unused, the player is already facing this direction so its unneeded
-LittlerootTown_BrendansHouse_2F_Movement_PlayerWatchBrendanEast:
-	delay_16
-	delay_16
-	walk_in_place_faster_left
-	step_end
 
 LittlerootTown_BrendansHouse_2F_EventScript_PC::
 	lockall
@@ -264,41 +32,329 @@ LittlerootTown_BrendansHouse_2F_EventScript_CheckRivalsPC::
 	releaseall
 	end
 
-PlayersHouse_2F_EventScript_Notebook::
-	msgbox PlayersHouse_2F_Text_Notebook, MSGBOX_SIGN
-	end
-
-PlayersHouse_2F_EventScript_GameCube::
-	msgbox PlayersHouse_2F_Text_ItsAGameCube, MSGBOX_SIGN
-	end
-
 PlayersHouse_2F_Text_ClockIsStopped:
-	.string "The clock is stopped…\p"
 	.string "Better set it and start it!$"
 
 PlayersHouse_2F_Text_HowDoYouLikeYourRoom:
-	.string "MOM: {PLAYER}, how do you like your\n"
-	.string "new room?\p"
-	.string "Good! Everything's put away neatly!\p"
-	.string "They finished moving everything in\n"
-	.string "downstairs, too.\p"
-	.string "POKéMON movers are so convenient!\p"
-	.string "Oh, you should make sure that\n"
 	.string "everything's all there on your desk.$"
 
 PlayersHouse_2F_Text_Notebook:
-	.string "{PLAYER} flipped open the notebook.\p"
-	.string "ADVENTURE RULE NO. 1\n"
-	.string "Open the MENU with START.\p"
-	.string "ADVENTURE RULE NO. 2\n"
-	.string "Record your progress with SAVE.\p"
 	.string "The remaining pages are blank…$"
 
 Common_Text_LookCloserAtMap:
-	.string "{PLAYER} took a closer look at the\n"
 	.string "HOENN region map.$"
 
-PlayersHouse_2F_Text_ItsAGameCube:
-	.string "It's a Nintendo GameCube.\p"
-	.string "A Game Boy Advance is connected to\n"
-	.string "serve as the Controller.$"
+
+
+
+
+
+
+
+EventScrip_Madre::
+	faceplayer
+	goto_if_unset FLAG_HABLAR_CON_MADRE, Ya_tienes_La_Baya
+	checkplayergender
+	goto_if_eq VAR_RESULT, FEMALE, Que_Zeus_Te_Bendiga_Mujer
+	goto_if_eq VAR_RESULT, MALE, Que_Zeus_Te_Bendiga_Hombre
+	end
+
+Ya_tienes_La_Baya:
+	msgbox Text_Baya_Pregunta, MSGBOX_NPC
+	waitmessage
+	checkitem ITEM_ORAN_BERRY 
+	goto_if_eq VAR_RESULT, TRUE, Gracias_Adios_Madre
+	applymovement LOCALID_MOM, Signo
+	msgbox Text_Que_Fue_Madre, MSGBOX_NPC
+	waitmessage
+	end
+
+Gracias_Adios_Madre:
+	removeitem ITEM_ORAN_BERRY
+	msgbox Text_Adios_Madre
+	waitmessage
+	applymovement LOCALID_MOM, Corazon
+	waitmovement 0
+	setflag FLAG_HABLAR_CON_MADRE
+    setvar VAR_NO_HE_DADO_BALLA, 1
+	checkplayergender
+	goto_if_eq VAR_RESULT, FEMALE, Adios_Hijita
+	goto_if_eq VAR_RESULT, MALE, Adios_Hijito
+	end
+
+Adios_Hijita:
+	msgbox Text_Adios_Hijita, MSGBOX_NPC
+	end
+
+Adios_Hijito:
+	msgbox Text_Adios_Hijito, MSGBOX_NPC
+	end
+
+Que_Zeus_Te_Bendiga_Mujer:
+	msgbox Text_Que_Zeus_Te_Bendiga_Mujer, MSGBOX_NPC
+	end
+
+Que_Zeus_Te_Bendiga_Hombre:
+	msgbox Text_Que_Zeus_Te_Bendiga_Hombre, MSGBOX_NPC
+	end
+
+EventScrip_Periodico_Pereza::
+	msgbox Text_Periodico_Pereza, MSGBOX_SIGN
+	end
+
+EventScrip_InicioDeTodoTrigger::
+    lockall
+	checkplayergender
+	goto_if_eq VAR_RESULT, FEMALE, Si_Eres_Mujer
+	goto_if_eq VAR_RESULT, MALE, Si_Eres_Hombre
+	end
+
+Si_Eres_Hombre:
+	msgbox Text_Ven_A_Ver, MSGBOX_DEFAULT
+    waitmessage
+    closemessage
+    applymovement OBJ_EVENT_ID_PLAYER, Move_Player1
+    waitmovement 0
+    msgbox Text_Periodico, MSGBOX_DEFAULT
+    waitmessage
+    applymovement LOCALID_MOM, Move_Mom1
+    waitmovement 0
+    msgbox Text_Indignada, MSGBOX_DEFAULT
+    waitmessage
+    applymovement OBJ_EVENT_ID_PLAYER, Move_Player2
+    waitmovement 0
+    msgbox Text_Dinero, MSGBOX_DEFAULT
+    applymovement LOCALID_MOM, Move_Mom2
+    waitmovement 0
+    setvar VAR_INICIO, 1
+    releaseall
+    end
+    
+Si_Eres_Mujer:
+	lockall
+	msgbox Text_Ven_A_Ver_Mujer, MSGBOX_DEFAULT
+    waitmessage
+    closemessage
+    applymovement OBJ_EVENT_ID_PLAYER, Move_Player1
+    waitmovement 0
+    msgbox Text_Periodico, MSGBOX_DEFAULT
+    waitmessage
+    applymovement LOCALID_MOM, Move_Mom1
+    waitmovement 0
+    msgbox Text_Indignada, MSGBOX_DEFAULT
+    waitmessage
+    applymovement OBJ_EVENT_ID_PLAYER, Move_Player2
+    waitmovement 0
+    msgbox Text_Dinero_Mujer, MSGBOX_DEFAULT
+    applymovement LOCALID_MOM, Move_Mom2
+    waitmovement 0
+    setvar VAR_INICIO, 1
+    releaseall
+    end
+
+EventScrip_InicioDeTodoTrigger1::
+    lockall
+	checkplayergender
+	goto_if_eq VAR_RESULT, FEMALE, Si_Eres_Mujer1
+	goto_if_eq VAR_RESULT, MALE, Si_Eres_Hombre1
+	end
+    
+Si_Eres_Hombre1:
+    msgbox Text_Ven_A_Ver, MSGBOX_DEFAULT
+    waitmessage
+    closemessage
+    applymovement OBJ_EVENT_ID_PLAYER, Move_Player11
+    waitmovement 0
+    msgbox Text_Periodico, MSGBOX_DEFAULT
+    waitmessage
+    applymovement LOCALID_MOM, Move_Mom1
+    waitmovement 0
+    msgbox Text_Indignada, MSGBOX_DEFAULT
+    waitmessage
+    applymovement OBJ_EVENT_ID_PLAYER, Move_Player2
+    waitmovement 0
+    msgbox Text_Dinero, MSGBOX_DEFAULT
+    applymovement LOCALID_MOM, Move_Mom2
+    waitmovement 0
+    setvar VAR_INICIO, 1
+    releaseall
+    end
+
+Si_Eres_Mujer1:
+    msgbox Text_Ven_A_Ver_Mujer, MSGBOX_DEFAULT
+    waitmessage
+    closemessage
+    applymovement OBJ_EVENT_ID_PLAYER, Move_Player11
+    waitmovement 0
+    msgbox Text_Periodico, MSGBOX_DEFAULT
+    waitmessage
+    applymovement LOCALID_MOM, Move_Mom1
+    waitmovement 0
+    msgbox Text_Indignada, MSGBOX_DEFAULT
+    waitmessage
+    applymovement OBJ_EVENT_ID_PLAYER, Move_Player2
+    waitmovement 0
+    msgbox Text_Dinero_Mujer, MSGBOX_DEFAULT
+    applymovement LOCALID_MOM, Move_Mom2
+    waitmovement 0
+    setvar VAR_INICIO, 1
+    releaseall
+    end
+
+EventScrip_InicioDeTodoTrigger2::
+    lockall
+	checkplayergender
+	goto_if_eq VAR_RESULT, FEMALE, Si_Eres_Mujer2
+	goto_if_eq VAR_RESULT, MALE, Si_Eres_Hombre2
+	end
+
+Si_Eres_Hombre2:
+    msgbox Text_Ven_A_Ver, MSGBOX_DEFAULT
+    waitmessage
+    closemessage
+    applymovement OBJ_EVENT_ID_PLAYER, Move_Player12
+    waitmovement 0
+    msgbox Text_Periodico, MSGBOX_DEFAULT
+    waitmessage
+    applymovement LOCALID_MOM, Move_Mom1
+    waitmovement 0
+    msgbox Text_Indignada, MSGBOX_DEFAULT
+    waitmessage
+    applymovement OBJ_EVENT_ID_PLAYER, Move_Player2
+    waitmovement 0
+    msgbox Text_Dinero, MSGBOX_DEFAULT
+    applymovement LOCALID_MOM, Move_Mom2
+    waitmovement 0
+    setvar VAR_INICIO, 1
+    releaseall
+    end
+
+Si_Eres_Mujer2:
+    msgbox Text_Ven_A_Ver_Mujer, MSGBOX_DEFAULT
+    waitmessage
+    closemessage
+    applymovement OBJ_EVENT_ID_PLAYER, Move_Player12
+    waitmovement 0
+    msgbox Text_Periodico, MSGBOX_DEFAULT
+    waitmessage
+    applymovement LOCALID_MOM, Move_Mom1
+    waitmovement 0
+    msgbox Text_Indignada, MSGBOX_DEFAULT
+    waitmessage
+    applymovement OBJ_EVENT_ID_PLAYER, Move_Player2
+    waitmovement 0
+    msgbox Text_Dinero_Mujer, MSGBOX_DEFAULT
+    applymovement LOCALID_MOM, Move_Mom2
+    waitmovement 0
+    setvar VAR_INICIO, 1
+    releaseall
+    end
+
+Text_Adios_Madre:
+	.string "Gracias.\p"
+	.string "Esa mirada en tu rostro...\p"
+	.string "Entiendo, Dios te guiará en tu camino.\n"
+	.string "No olvides de donde vienes y...\p"
+	.string "Recuerda que siempre te amaré.$"
+
+Text_Adios_Hijito:
+	.string "Adiós hijito.$"
+
+Text_Adios_Hijita:
+	.string "Adiós hijita.$"
+
+Text_Que_Fue_Madre:
+	.string "¡¿Qué fue?!$"
+
+Text_Baya_Pregunta:
+	.string "¿Ya tienes la baya?$"
+
+Text_Que_Zeus_Te_Bendiga_Hombre:
+	.string "Que Diosito te bendiga hijito.$"
+
+Text_Que_Zeus_Te_Bendiga_Mujer:
+	.string "Que Diosito te bendiga hijita.$"
+
+Text_Ven_A_Ver:
+    .string "Hijito ven a ver.$"
+
+Text_Ven_A_Ver_Mujer:
+	.string "Hijita ven a ver.$"
+
+Text_Periodico: 
+    .string "Usted leyó el periódico.\p"
+    .string "La empresa Anatura Ltda. Ha anunciado\n"
+    .string "la construcción de un nuevo hotel en\p"
+    .string "las Islas Galápagos.\p"
+    .string "Pionero en este territorio, posibilitará\n"
+    .string "el ingreso turistico al archipielago.\p"
+    .string "Han presentado planes de exploración,\n"
+    .string "guías turísticas, actividades recreativas\p"
+    .string "y por supuesto...\p"
+    .string "Captura de los pokémon únicos que\n"
+    .string "allí habitan.\p"
+    .string "El gobierno ha revisado y aprobado\n"
+    .string "todos estos planes,\p"
+    .string "así que prepárense para una\n"
+    .string "experiencia sin igual.$"
+
+Text_Indignada:
+    .string "No puedo creer que esa empresa\n"
+    .string "vaya a meterse en nuestra sagrada isla.\p"
+    .string "En fin, cuando uno tiene su edad\n"
+    .string "de poco sirve indignarse.\p"
+    .string "Anda al mercado y trae una baya\n"
+    .string "para el almuerzo.$"
+
+Text_Dinero:
+    .string "Usted recivió ¥20.\p"
+    .string "Que diosito te bendiga hijito.$" 
+
+Text_Dinero_Mujer:
+    .string "Usted recivió ¥20.\p"
+    .string "Que diosito te bendiga hijita.$" 
+
+Text_Periodico_Pereza:
+	.string "Es un periódico, que pereza leerlo\n"
+	.string "a leerlo.$"
+
+Move_Player1:
+    walk_up
+    walk_up
+    walk_right
+    face_down
+    step_end
+
+Move_Mom1:
+    face_up
+    step_end
+
+Move_Player2:
+    walk_right
+    face_down
+    step_end
+
+Move_Mom2:
+    face_left
+    step_end
+    
+Move_Player11:
+    walk_right
+	walk_up
+    walk_right
+    face_down
+    step_end
+ 
+Move_Player12:
+    walk_right
+    face_down
+    step_end
+
+Signo:
+	emote_exclamation_mark
+	step_end
+
+Corazon:
+	emote_heart
+	step_end
+	

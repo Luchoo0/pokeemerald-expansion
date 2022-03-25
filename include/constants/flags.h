@@ -100,8 +100,8 @@
 #define FLAG_AVISO_RIVAL                     0x55  // Usada por mi
 
 #define FLAG_HIDE_CONTEST_POKE_BALL          0x56  // Always set after new game, object it hides is added directly
-#define FLAG_ITEM_LITTLE_ROOT_TOWN_BIG_PEARL 0x57  //usada por mi
-#define FLAG_ITEM_LITTLE_ROOT_TOWN_MIRACLE_S 0x58  //usada por mi
+#define FLAG_ITEM_LITTLE_ROOT_TOWN_BIG_PEARL 0x57  //Usada por mi
+#define FLAG_ITEM_LITTLE_ROOT_TOWN_MIRACLE_S 0x58  //Usada por mi
 #define FLAG_DECLINED_BIKE                   0x59
 #define FLAG_RECEIVED_BIKE                   0x5A
 #define FLAG_WATTSON_REMATCH_AVAILABLE       0x5B
@@ -253,8 +253,7 @@
 #define FLAG_RECEIVED_TM05                   0xE7
 #define FLAG_RECEIVED_TM19                   0xE8
 
-#define FLAG_UNUSED_0x0E9                    0xE9 // Unused Flag
-
+#define FLAG_HABLAR_CON_MADRE                0xE9 // Unused 
 #define FLAG_RECEIVED_TM44                   0xEA
 #define FLAG_RECEIVED_TM45                   0xEB
 #define FLAG_RECEIVED_GLASS_ORNAMENT         0xEC

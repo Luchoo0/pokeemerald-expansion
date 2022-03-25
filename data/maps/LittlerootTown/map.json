@@ -59,15 +59,15 @@
       "x": 4,
       "y": 6,
       "elevation": 0,
-      "dest_map": "MAP_LITTLEROOT_TOWN_MAYS_HOUSE_1F",
-      "dest_warp_id": 1
+      "dest_map": "MAP_LITTLEROOT_TOWN_MAYS_HOUSE_2F",
+      "dest_warp_id": 0
     },
     {
       "x": 18,
       "y": 9,
       "elevation": 0,
-      "dest_map": "MAP_LITTLEROOT_TOWN_BRENDANS_HOUSE_1F",
-      "dest_warp_id": 1
+      "dest_map": "MAP_LITTLEROOT_TOWN_BRENDANS_HOUSE_2F",
+      "dest_warp_id": 0
     },
     {
       "x": 20,
@@ -92,7 +92,24 @@
     }
   ],
   "coord_events": [
-
+    {
+      "type": "trigger",
+      "x": 34,
+      "y": 12,
+      "elevation": 0,
+      "var": "VAR_NO_HE_DADO_BALLA",
+      "var_value": "0",
+      "script": "EventScrip_NoHeDadoBaya"
+    },
+    {
+      "type": "trigger",
+      "x": 35,
+      "y": 12,
+      "elevation": 0,
+      "var": "VAR_NO_HE_DADO_BALLA",
+      "var_value": "0",
+      "script": "EventScrip_NoHeDadoBaya"
+    }
   ],
   "bg_events": [
     {
@@ -100,7 +117,7 @@
       "x": 37,
       "y": 18,
       "elevation": 0,
-      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
       "script": "EventScript_Letrero1"
     },
     {

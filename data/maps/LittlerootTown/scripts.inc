@@ -3,7 +3,12 @@
 LittlerootTown_MapScripts::
 	.byte 0
 
-
+EventScrip_NoHeDadoBaya::
+	applymovement OBJ_EVENT_ID_PLAYER, Tu_Abajo
+	waitmovement 0
+	msgbox LittlerootTown_Text_NoLeHeDadoLaBalla, MSGBOX_DEFAULT
+	closemessage
+	end
 
 EventScript_caja::
 	msgbox LittlerootTown_Text_RicasBayas, MSGBOX_SIGN
@@ -36,7 +41,7 @@ LittlerootTown_EventScript_PrimeraVez:
 	delay 10
 	msgbox LittlerootTown_Text_Hermano, MSGBOX_DEFAULT
 	closemessage
-	applymovement OBJ_EVENT_ID_PLAYER , Player1
+	applymovement OBJ_EVENT_ID_PLAYER, Player1
 	waitmovement 0
 	applymovement 2, Rival_Viene
 	waitmovement 0
@@ -88,6 +93,8 @@ LittlerootTown_Mart_Pokemart:
 	release
 	end
 
+LittlerootTown_Text_NoLeHeDadoLaBalla:
+	.string "No le he dado la baya a mi madre.$"
 
 LittlerootTown_Text_RicasBayas:
 	.string "¡Que ricas bayas!$"
@@ -200,3 +207,6 @@ Rival_Va:
 	walk_fast_up
 	step_end
 
+Tu_Abajo:
+	walk_down
+	step_end

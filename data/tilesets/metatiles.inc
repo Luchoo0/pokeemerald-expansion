@@ -565,3 +565,4 @@ gMetatiles_Manglar::
 	.align 1
 gMetatileAttributes_Manglar::
 	.incbin "data/tilesets/secondary/manglar/metatile_attributes.bin"
+	
